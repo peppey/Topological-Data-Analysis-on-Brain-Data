@@ -37,7 +37,6 @@ def merge_feature_dfs(time_series_feature_df, brain_imaging_feature_df):
 
 
 
-
 ##### For Feature Selection #####
 
 def remove_columns_with_str(feature_df, list_of_strings_in_column_name):
@@ -107,7 +106,7 @@ def filter_dataframe_with_indices(feature_df, indices_dict_all_subjects, label_l
 
         all_labels["Fold_"+str(fold_idx)] = fold_df["Label"]
 
-        fold_df.drop(columns=['Label'], inplace=True)
+        fold_df = fold_df.drop(columns=fold_df.filter(like='Label').columns)
 
         feature_df_all_folds["Fold_"+str(fold_idx)] = fold_df
         
