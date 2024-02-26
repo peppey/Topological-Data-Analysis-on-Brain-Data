@@ -117,14 +117,23 @@ def filter_dataframe_with_indices(feature_df, indices_dict_all_subjects, label_l
 def filter_fold_dependant_dataframe_with_indices(fold_dependant_feature_df, indices_dict_all_subjects, label_list, n_folds = 5):
     
     feature_df_all_folds = {}
+    all_labels = {}
+
 
     for fold_idx in range(n_folds):
 
         filtered_fold_df = fold_dependant_feature_df[fold_dependant_feature_df["Fold"] == fold_idx]
 
-        feature_df_all_folds["Fold_"+str(fold_idx)] = return_fold_df(filtered_fold_df, indices_dict_all_subjects, label_list, fold_idx)
+        fold_df = return_fold_df(filtered_fold_df, indices_dict_all_subjects, label_list, fold_idx)
 
-    return feature_df_all_folds
+        all_labels["Fold_"+str(fold_idx)] = fold_df["Label"]
+
+
+        fold_df = fold_df.drop(columns=fold_df.filter(like='Label').columns)
+
+        feature_df_all_folds["Fold_"+str(fold_idx)] = fold_df
+
+    return feature_df_all_folds, all_labels
 
 
 
