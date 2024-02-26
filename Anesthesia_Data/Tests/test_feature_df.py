@@ -144,12 +144,41 @@ def test_feature_dfs_have_duplicates():
 
 
     for fold in range(5):
-        print(train_features_dfs_all_folds["Fold_"+str(fold)])
         assert has_duplicate_rows(train_features_dfs_all_folds["Fold_"+str(fold)]) == False
 
     X_train, y_train, X_test, y_test = helpers.initialize_fold_dicts(train_features_dfs_all_folds, train_labels_all_folds, validation_features_dfs_all_folds, validation_labels_all_folds)
 
+    print(X_train)
     for fold in range(5):
         assert has_duplicate_rows(X_train[fold]) == False
         assert has_duplicate_rows(X_test[fold]) == False
-    
+        
+        
+
+def test_has_index_or_labels_as_feature():
+        
+    subject_list = ["m292", "m294"]
+    label_list = [0, 1, 2, 3, 4]
+
+    filename = "TS_Test_Features_no_Duplicates.csv"
+    ts_feature_df_no_duplicates = ts_helpers.import_and_concatenate_datasets(subject_list, [filename], parent_directory = "")
+
+    filename = "BI_Test_Features_no_Duplicates.csv"
+    bi_feature_df_no_duplicates, _ = bi_helpers.import_and_concatenate_datasets(subject_list, [filename], parent_directory = "")
+
+
+    feature_df = helpers.merge_feature_dfs(ts_feature_df_no_duplicates, bi_feature_df_no_duplicates)
+
+
+    train_indices, validation_indices = create_test_folds(feature_df)
+
+    train_features_dfs_all_folds, train_labels_all_folds = helpers.filter_dataframe_with_indices(feature_df, train_indices, label_list)
+    validation_features_dfs_all_folds, validation_labels_all_folds = helpers.filter_dataframe_with_indices(feature_df, validation_indices, label_list)
+
+    X_train, y_train, X_test, y_test = helpers.initialize_fold_dicts(train_features_dfs_all_folds, train_labels_all_folds, validation_features_dfs_all_folds, validation_labels_all_folds)
+
+    # Is there a column left which contains 0, 1, 2, 3 and 4?
+    for col in X_train[0].columns:
+        column_contains_all_values =set([0, 1, 2, 3, 4]).issubset(X_train[0][col])
+
+    assert column_contains_all_values == False
