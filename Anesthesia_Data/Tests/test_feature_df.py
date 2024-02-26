@@ -75,7 +75,7 @@ def test_feature_dfs_have_duplicates():
     # Create Test Features
     create_test_features()
 
-    # Test Time Series Features
+    ### Test Time Series Features ###
     filename = "TS_Test_Features_with_Duplicates.csv"
     feature_df_with_duplicates = ts_helpers.import_and_concatenate_datasets(subject_list, [filename], parent_directory = "")
     
@@ -86,4 +86,20 @@ def test_feature_dfs_have_duplicates():
     feature_df_no_duplicates = ts_helpers.import_and_concatenate_datasets(subject_list, [filename], parent_directory = "")
 
     assert has_duplicates(feature_df_no_duplicates) == False
+
+
+    #### Test Brain Imaging Features ###
+
+    filename = "BI_Test_Features_with_Duplicates.csv"
+    feature_df_with_duplicates, _ = bi_helpers.import_and_concatenate_datasets(subject_list, [filename], parent_directory = "")
+    
+    assert has_duplicates(feature_df_with_duplicates) == True
+
+
+    filename = "BI_Test_Features_no_Duplicates.csv"
+    feature_df_no_duplicates, _ = bi_helpers.import_and_concatenate_datasets(subject_list, [filename], parent_directory = "")
+
+    assert has_duplicates(feature_df_no_duplicates) == False
+
+
 
