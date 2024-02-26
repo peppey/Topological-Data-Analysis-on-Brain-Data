@@ -18,6 +18,25 @@ def keep_first_duplicate_columns(df):
     return df
 
 
+def merge_feature_dfs(time_series_feature_df, brain_imaging_feature_df):
+    """
+    Merge time series and brain imaging feature DataFrames.
+    
+    Args:
+    - time_series_feature_df (pandas.DataFrame): DataFrame containing time series features.
+    - brain_imaging_feature_df (pandas.DataFrame): DataFrame containing brain imaging features.
+    
+    Returns:
+    - pandas.DataFrame: Merged DataFrame containing both time series and brain imaging features.
+    """
+    feature_df = pd.merge(time_series_feature_df, brain_imaging_feature_df, left_index=True, right_index=True, suffixes=('', '_BI'))
+    feature_df.reset_index(inplace=True)
+    feature_df.drop(columns=["index"], inplace=True)
+
+    return feature_df
+
+
+
 
 ##### For Feature Selection #####
 

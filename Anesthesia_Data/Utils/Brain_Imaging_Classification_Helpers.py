@@ -47,8 +47,9 @@ def import_and_concatenate_datasets(subjects, list_of_filenames, parent_director
                 subject_feature_dfs[subject] = pd.concat([subject_feature_dfs[subject], df], ignore_index=True)
                 subject_feature_dfs[subject].drop(subject_feature_dfs[subject].columns[subject_feature_dfs[subject].columns.str.contains('_left',case=False)], axis=1, inplace=True)
 
-        for label in label_list:
-            subject_feature_dfs[subject] = helpers.keep_first_duplicate_columns(subject_feature_dfs[subject])
+        
+        subject_feature_dfs[subject] = helpers.keep_first_duplicate_columns(subject_feature_dfs[subject])
+            
         
         subject_feature_dfs[subject]["Subject"] = subjects.index(subject)
 
@@ -68,6 +69,8 @@ def cut_dataframe_to_same_length_as_TS(subject_feature_dfs, subject_list, label_
             subject_feature_dfs[subject] = subject_feature_dfs[subject].drop(subject_feature_dfs[subject][subject_feature_dfs[subject]["Label"]==label].index[-1])
             
         brain_imaging_feature_df = pd.concat([brain_imaging_feature_df, subject_feature_dfs[subject]])
+
+    brain_imaging_feature_df.reset_index(inplace=True, drop=True)
 
 
     return brain_imaging_feature_df
