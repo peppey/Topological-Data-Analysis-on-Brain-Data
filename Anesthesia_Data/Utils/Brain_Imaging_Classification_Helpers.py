@@ -75,3 +75,36 @@ def cut_dataframe_to_same_length_as_TS(subject_feature_dfs, subject_list, label_
 
     return brain_imaging_feature_df
 
+
+def create_brain_imaging_feature_df(subject_list, brain_imagining_filenames):
+    """
+    Create the brain imaging feature dataframe, including fold-dependent features.
+
+    Parameters:
+    subject_list (list): List of subjects for data import.
+    atol_vectorization_filename_brain_imaging (list): List of filenames for brain imaging vectorization features.
+    bi_helpers (module): Module containing helper functions for brain imaging data processing.
+
+    Returns:
+    pd.DataFrame: DataFrame containing brain imaging features with the same length as time series data.
+    pd.DataFrame: DataFrame containing focreate_time_series_feature_df(subject_list, list_of_filenames):ld-dependent brain imaging features with the same length as time series data.
+    """
+
+    all_dataframes = []
+
+    for list_of_filenames in brain_imagining_filenames:
+        # Import and concatenate brain imaging datasets
+        _, subject_feature_df = import_and_concatenate_datasets(
+            subject_list, list_of_filenames, parent_directory="Brain_Imaging"
+        )
+    
+        # Cut the dataframe to the same length as the time series data
+        feature_df = cut_dataframe_to_same_length_as_TS(
+            subject_feature_df, subject_list
+        )
+
+        feature_df.fillna(0, inplace=True)
+
+        all_dataframes.append(feature_df)
+
+    return all_dataframes

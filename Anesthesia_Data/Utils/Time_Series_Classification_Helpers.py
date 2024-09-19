@@ -45,6 +45,8 @@ def import_and_concatenate_datasets(subject_list, list_of_filenames, parent_dire
 
         subject_feature_dfs[subject]["Subject"] = subject_idx
 
+    
+
     feature_df = pd.concat(subject_feature_dfs.values(), ignore_index=True)
 
     # For duplicate columns, only keep one
@@ -53,3 +55,29 @@ def import_and_concatenate_datasets(subject_list, list_of_filenames, parent_dire
     feature_df.drop(columns=['Unnamed: 0'], inplace=True)
     
     return feature_df
+
+
+def create_time_series_feature_dfs(subject_list, time_series_filenames):
+    """
+    Create the time series feature dataframe by importing and concatenating datasets.
+
+    Parameters:
+    subject_list (list): List of subjects for data import.
+    list_of_filenames (list): List of filenames for time series features.
+    ts_helpers (module): Module containing helper functions for time series data processing.
+
+    Returns:
+    pd.DataFrame: DataFrame containing the concatenated time series features.
+    """
+
+    all_dataframes = []
+    
+    for list_of_filenames in time_series_filenames:
+        # Import and concatenate time series datasets
+        time_series_feature_df = import_and_concatenate_datasets(
+        subject_list, list_of_filenames, parent_directory="Time_Series"
+        )
+
+        all_dataframes.append(time_series_feature_df)
+
+    return all_dataframes
