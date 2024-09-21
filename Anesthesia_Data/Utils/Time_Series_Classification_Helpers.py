@@ -42,22 +42,23 @@ def import_and_concatenate_datasets(subject_list, list_of_filenames, parent_dire
                 subject_feature_dfs[subject] = pd.concat([subject_feature_dfs[subject], df_both_data_types], axis=1)
             else:
                 subject_feature_dfs[subject] = df_both_data_types
+            
+            # For duplicate columns, only keep one
+            subject_feature_dfs[subject] = helpers.keep_first_duplicate_columns(subject_feature_dfs[subject])
+
 
         subject_feature_dfs[subject]["Subject"] = subject_idx
 
-    
 
     feature_df = pd.concat(subject_feature_dfs.values(), ignore_index=True)
 
-    # For duplicate columns, only keep one
-    feature_df = helpers.keep_first_duplicate_columns(feature_df)
 
     feature_df.drop(columns=['Unnamed: 0'], inplace=True)
     
     return feature_df
 
 
-def create_time_series_feature_dfs(subject_list, time_series_filenames):
+def create_time_series_feature_dfs(subject_list, time_series_filenames, parent_directory="Time_Series"):
     """
     Create the time series feature dataframe by importing and concatenating datasets.
 
@@ -75,7 +76,7 @@ def create_time_series_feature_dfs(subject_list, time_series_filenames):
     for list_of_filenames in time_series_filenames:
         # Import and concatenate time series datasets
         time_series_feature_df = import_and_concatenate_datasets(
-        subject_list, list_of_filenames, parent_directory="Time_Series"
+        subject_list, list_of_filenames, parent_directory=parent_directory
         )
 
         all_dataframes.append(time_series_feature_df)
