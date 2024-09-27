@@ -11,8 +11,7 @@ This code is tested on a Mac with Python version 3.10.12.
 
 For installing the packages and dependencies, run
 
-```bash
-poetry install
+`poetry install`
 
 
 The `Anesthesia_Data` folder contains code for classifying multimodal brain data into anesthesia stages.
