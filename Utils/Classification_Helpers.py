@@ -203,9 +203,6 @@ def initialize_fold_dicts(train_features_dfs_all_folds, train_labels_all_folds, 
 
 
 def create_final_input_data_dicts(feature_df, final_train_indices, test_indices, label_list):
-    """
-
-    """
 
     np.random.seed(42)
 
@@ -227,11 +224,12 @@ def create_final_input_data_dicts(feature_df, final_train_indices, test_indices,
             filtered_label_df.reset_index(drop=True, inplace=True)
 
             train_indices_in_filtered_df = final_train_indices[subject]["Label_"+str(label)]
-            test_indices_in_filtered_df = test_indices[subject]["Label_"+str(label)][0]
+            test_indices_in_filtered_df = test_indices[subject]["Label_"+str(label)]
 
             feature_df_with_train_indices = filtered_label_df.iloc[train_indices_in_filtered_df]
             feature_df_with_test_indices = filtered_label_df.iloc[test_indices_in_filtered_df]
 
+            
             y_train.extend(list(feature_df_with_train_indices["Label"]))
             y_test.extend(list(feature_df_with_test_indices["Label"]))
 
