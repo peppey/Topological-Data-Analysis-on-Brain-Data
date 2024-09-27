@@ -1,4 +1,4 @@
-# Topological-Data-Analysis-on-Brain-Data
+# Topological Data Analysis on Multimodal Brain Data
 
 
 Code for the master thesis "Topological Data Analysis on Multimodal Brain Data" by Pia Baronetzky (supervisors Bastian Rieck and Silviu Bodea).
